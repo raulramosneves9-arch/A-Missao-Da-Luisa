@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Missão da Luísa</title>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div id="stage"><canvas id="c" width="320" height="176"></canvas>
+<div id="hud" class="hide"><span id="hm"></span><span id="hi"></span><button id="pb">Pausa</button></div>
+<div id="msg" class="hide"></div><div id="ob" class="hide"></div><div id="help" class="ov hide"></div>
+<div id="title" class="ov"><h1>A Missão da Luísa</h1><p>Uma pequena aventura, com um grande significado.</p><button id="go">Iniciar aventura</button><p class="s">WASD ou setas para andar. E para interagir. Esc para pausar.</p></div>
+<div id="pick" class="ov hide"><p id="pq">Quem vai jogar?</p><div><button id="pr" data-w="raul">Raul</button><button id="pl" data-w="luisa">Luísa</button></div></div>
+<div id="pause" class="ov hide"><h1>Pausa</h1><button id="rs">Continuar</button>
+<label><input type="checkbox" id="cm" checked> Música</label><label><input type="checkbox" id="cf" checked> Efeitos sonoros</label>
+<label>Volume <input type="range" id="vl" min="0" max="100" value="50"></label><button id="rt">Reiniciar aventura</button></div>
+<div id="pz" class="ov hide"><p>O pedestal pede a mensagem na ordem certa. Toque nos fragmentos.</p><div id="phrase"></div><div id="pieces"></div></div>
+<div id="letter" class="ov hide"><div class="paper" id="paper"></div></div>
+<div id="final" class="ov hide"><h1>A Missão da Luísa</h1><p>Uma pequena aventura, com um grande significado.</p><button id="again">Jogar de novo</button></div>
+</div>
+<div id="rot">Gire o celular para deitado para jogar.</div>
+<div id="pad"><div id="dp"><i></i><b data-k="up">&#9650;</b><i></i><b data-k="left">&#9664;</b><i></i><b data-k="right">&#9654;</b><i></i><b data-k="down">&#9660;</b><i></i></div><div style="display:flex;gap:10px;align-items:flex-end"><b id="mnt" data-k="mount">M</b><b id="act" data-k="act">E</b></div></div>
+<script src="script.js" defer></script>
+</body></html>

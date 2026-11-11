@@ -1,0 +1,215 @@
+# TASK — Separação do projeto em HTML, JavaScript e CSS
+
+## Objetivo
+
+Refatorar o arquivo `index.html` existente, separando corretamente sua estrutura, lógica e estilização em três arquivos independentes:
+
+- `index.html` — Estrutura HTML.
+- `script.js` — Toda a lógica e funcionalidades JavaScript.
+- `style.css` — Toda a estilização CSS.
+
+**IMPORTANTE:** A refatoração deve preservar integralmente o funcionamento atual do jogo. Não é uma tarefa de redesign, reprogramação ou otimização. O objetivo é exclusivamente organizar o código.
+
+---
+
+# REGRAS OBRIGATÓRIAS
+
+1. Trabalhe diretamente com o código existente no projeto.
+2. Não reescreva funcionalidades que já estão funcionando.
+3. Não remova nenhum elemento, recurso, animação, mecânica ou interação.
+4. Não altere textos, diálogos, personagens, mapas, configurações ou identidade visual.
+5. Preserve todos os IDs, classes, atributos, eventos e referências utilizados pelo JavaScript.
+6. Não simplifique trechos de código por considerar que são desnecessários.
+7. Não invente novas funcionalidades.
+8. Execute somente UMA etapa por vez.
+9. Ao concluir cada etapa, interrompa completamente o trabalho e aguarde minha autorização.
+10. Não avance automaticamente para a próxima etapa, mesmo que ela seja simples.
+
+## ETAPA 1 — Separação do HTML
+
+**Objetivo:** Organizar o arquivo `index.html`, mantendo exclusivamente a estrutura HTML.
+
+Tarefas:
+
+1. Analise todo o arquivo original antes de realizar qualquer alteração.
+2. Identifique todos os elementos HTML existentes.
+3. Preserve integralmente a estrutura de elementos, hierarquia, IDs, classes, atributos e conteúdo.
+4. Remova o bloco CSS que está dentro da tag `<style>`.
+5. Remova o bloco JavaScript que está dentro da tag `<script>`.
+6. Adicione a referência ao arquivo externo `style.css` dentro do `<head>`:
+
+   `<link rel="stylesheet" href="style.css">`
+
+7. Adicione a referência ao JavaScript externo, preferencialmente antes do fechamento do `</body>`:
+
+   `<script src="script.js" defer></script>`
+
+8. Preserve fontes externas, metadados, configurações de viewport e demais referências existentes.
+9. Não crie nem edite ainda o conteúdo de `script.js` ou `style.css`.
+
+**Validação:**
+
+- O HTML deve continuar contendo todos os elementos originais.
+- Nenhum conteúdo ou componente visual pode desaparecer da estrutura.
+- As referências aos arquivos externos devem estar corretas.
+- Não deve existir CSS ou JavaScript inline que pertença aos blocos removidos.
+
+### PONTO DE PARADA 1
+
+Após concluir a primeira etapa:
+
+- Salve o `index.html`.
+- Apresente um resumo das alterações realizadas.
+- Informe quais elementos foram preservados.
+- Informe se encontrou algum problema ou dependência.
+- Não execute a segunda etapa.
+
+Finalize sua resposta exatamente perguntando:
+
+**"Etapa 1 concluída! Posso continuar com a separação do JavaScript?"**
+
+Aguarde minha resposta.
+
+---
+
+## ETAPA 2 — Separação do JavaScript
+
+**Autorização necessária:** Somente execute esta etapa depois que eu responder afirmativamente à pergunta da Etapa 1.
+
+**Objetivo:** Transferir toda a lógica JavaScript original para `script.js`.
+
+Tarefas:
+
+1. Analise o JavaScript original completo.
+2. Transfira integralmente o conteúdo da tag `<script>` original para `script.js`.
+3. Preserve a ordem de declaração de variáveis, constantes, funções e eventos.
+4. Preserve todas as funções, objetos, arrays, configurações e estruturas de dados.
+5. Preserve integralmente:
+   - Sistema de movimentação.
+   - Controles de teclado e dispositivos móveis.
+   - Sistema de colisão.
+   - Mapas e cenários.
+   - Personagens e sprites.
+   - Animações.
+   - Sistema de áudio.
+   - Efeitos visuais.
+   - Diálogos e cutscenes.
+   - Sistema de batalha.
+   - Quebra-cabeças.
+   - Sistema de progressão.
+   - Telas de início, pausa e finalização.
+   - Todas as demais funcionalidades existentes.
+6. Não modifique a lógica interna do jogo.
+7. Não altere nomes de variáveis, funções ou identificadores.
+8. Não remova comentários importantes.
+9. Verifique se todas as referências aos elementos HTML continuam funcionando.
+10. Garanta que o JavaScript seja carregado corretamente pelo `index.html`.
+
+**Validação:**
+
+- Compare o JavaScript extraído com o código original.
+- Verifique se nenhuma função ou bloco foi esquecido.
+- Verifique possíveis erros de sintaxe.
+- Confira se os seletores HTML utilizados existem no `index.html`.
+- Não faça alterações visuais nesta etapa.
+
+### PONTO DE PARADA 2
+
+Após concluir:
+
+- Salve o arquivo `script.js`.
+- Apresente um resumo das funções e sistemas transferidos.
+- Informe os testes e verificações realizados.
+- Não execute a terceira etapa.
+
+Finalize sua resposta exatamente perguntando:
+
+**"Etapa 2 concluída! Posso continuar com a separação do CSS?"**
+
+Aguarde minha resposta.
+
+---
+
+## ETAPA 3 — Separação do CSS
+
+**Autorização necessária:** Somente execute esta etapa depois que eu responder afirmativamente à pergunta da Etapa 2.
+
+**Objetivo:** Transferir todo o CSS original para `style.css`.
+
+Tarefas:
+
+1. Analise integralmente o CSS original.
+2. Transfira todas as regras CSS para `style.css`.
+3. Preserve todas as variáveis CSS definidas em `:root`.
+4. Preserve integralmente:
+   - Seletores.
+   - Classes.
+   - IDs.
+   - Media queries.
+   - Animações.
+   - Keyframes.
+   - Gradientes.
+   - Cores.
+   - Sombras.
+   - Transições.
+   - Responsividade.
+   - Estilização para dispositivos móveis.
+   - Configurações de orientação da tela.
+   - Preferências de movimento reduzido.
+5. Preserve a ordem das regras CSS sempre que possível, especialmente quando houver seletores repetidos ou sobrescritos.
+6. Não altere valores, dimensões, cores, espaçamentos ou propriedades.
+7. Não faça redesign.
+8. Não adicione bibliotecas ou frameworks.
+9. Garanta que o `index.html` esteja carregando corretamente o `style.css`.
+
+**Validação:**
+
+- Compare o CSS extraído com o CSS original.
+- Confira se nenhuma regra foi esquecida.
+- Verifique se todos os seletores utilizados no HTML continuam correspondendo aos elementos existentes.
+- Verifique se a responsividade e as animações foram preservadas.
+
+### FINALIZAÇÃO
+
+Após concluir:
+
+1. Salve `style.css`.
+2. Confira a integração dos três arquivos.
+3. Verifique se o projeto possui a seguinte organização:
+
+   - `index.html`
+   - `script.js`
+   - `style.css`
+
+4. Verifique se não existem referências quebradas.
+5. Execute uma verificação final de sintaxe e carregamento.
+6. Se possível, abra o jogo e teste as principais funcionalidades.
+7. Informe eventuais problemas encontrados, sem ocultá-los.
+
+Apresente um relatório final contendo:
+
+- Arquivos criados ou modificados.
+- O que foi transferido para cada arquivo.
+- Testes realizados.
+- Problemas encontrados, caso existam.
+- Confirmação de que a separação foi concluída.
+
+---
+
+# INSTRUÇÃO FINAL
+
+**A prioridade absoluta é preservar o jogo original.**
+
+Não transforme esta tarefa em uma refatoração geral do projeto.
+
+Não altere a experiência do jogador.
+
+Não tente executar as três etapas de uma só vez.
+
+A execução deve seguir rigorosamente esta sequência:
+
+1. HTML → PARAR E AGUARDAR AUTORIZAÇÃO.
+2. JavaScript → PARAR E AGUARDAR AUTORIZAÇÃO.
+3. CSS → FINALIZAR E VALIDAR.
+
+Se encontrar alguma dificuldade durante uma etapa, explique o problema antes de tomar decisões que possam comprometer o código original.
