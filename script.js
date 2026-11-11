@@ -1,6 +1,8 @@
 
 (()=>{
-/* ===== CONFIGURAÇÃO: edite textos, assinatura e aparência aqui ===== */
+/* ==========================================
+  01 — CONFIGURAÇÕES E CONTEÚDO
+========================================== */
 const CFG={
  intro:"“Dizem que existem lugares que só aparecem para quem está disposto a explorar. Talvez hoje você encontre um deles.”",
  letter:["Se você chegou até aqui, atravessou florestas, lagos, espinhos e até um bruxo.","Essa aventura inteira foi o meu jeito de dizer obrigado por tornar meus dias mais leves.","Obrigado por ter vindo me buscar, de verdade.","Espero que tenha gostado dessa pequena surpresa."],
@@ -8,7 +10,9 @@ const CFG={
  fragments:["Um pequeno","mundo","só seu."],
  chars:{raul:{name:"Raul",hair:"#2b1d16",skin:"#e0ae88",shirt:"#ece6d4",skirt:"#23262f",shoe:"#a9d0ee",pack:"#6b4a2a",brace:"#c9ced6",lip:"#b86a5a",blush:"#e0a090",curly:1,glasses:1,stubble:1},luisa:{name:"Luísa",hair:"#6b3a28",skin:"#efc3a0",shirt:"#262633",skirt:"#6f84b5",shoe:"#f4f1ee",pack:"#8b5a33",brace:"#e8c872",lip:"#d9737c",blush:"#f09a90",long:1,ring:1}}
 };
-/* ===== MAPAS ===== */
+/* ==========================================
+  02 — MAPAS E CENÁRIOS
+========================================== */
 const P=a=>a.map(r=>r.padEnd(20,'T').slice(0,20)),TT='T'.repeat(20);
 const GREEN=['#2e6b3a','#4f9a4a','#8fd06a'],PINK=['#b5508f','#d878b2','#f6b3d6'],DEEP=['#17463f','#2a7a5a','#5fc28a'];
 const MAPS=[
@@ -32,6 +36,9 @@ const MAPS=[
 {name:"O Calabouço",g:'#3a3a52',wall:1,tc:GREEN,tn:[25,5,45,.5],mood:3,intro:"O calabouço do bruxo. Há selos no chão e uma gaiola ao fundo.",ex:{},
  rows:P([TT,"T..................T","T.........T........T","T..................T","T..................T","T..................T","T..................T","T..................T","T.........T........T","T..................T",TT]),
  objs:[{t:'cage',x:17,y:2},{t:'torch',x:3,y:1,nouse:1},{t:'torch',x:9,y:1,nouse:1},{t:'torch',x:13,y:1,nouse:1}]}];
+/* ==========================================
+  03 — CANVAS, ELEMENTOS E ESTADO GLOBAL
+========================================== */
 const W=20,Hh=11,TS=16;
 const cv=document.getElementById('c'),ctx=cv.getContext('2d'),$=i=>document.getElementById(i);
 const S={},K={};let fire=[],amb=[],bf=[],WHO='luisa',RAUL_DONE=0;const BL=document.createElement('canvas');BL.width=80;BL.height=44;const bx=BL.getContext('2d');
@@ -39,7 +46,9 @@ const Hs=(x,y,s=0)=>{const v=Math.sin(x*12.9898+y*78.233+s*37.7)*43758.5453;retu
 const R=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x|0,y|0,w,h)};
 const M=()=>MAPS[S.map];
 const disc=(cx,cy,r,c)=>{for(let dy=-r;dy<=r;dy++){const w=Math.floor(Math.sqrt(r*r-dy*dy+.5));R(cx-w,cy+dy,w*2+1,1,c)}};
-/* ===== ÁUDIO (Web Audio sintetizado) ===== */
+/* ==========================================
+  04 — SISTEMA DE ÁUDIO
+========================================== */
 const A={c:null,v:.5,m:1,f:1,k:0,
  init(){if(this.c){this.c.resume();return}const c=this.c=new(window.AudioContext||window.webkitAudioContext)();this.mg=c.createGain();this.mg.connect(c.destination);this.mu=c.createGain();this.mu.connect(this.mg);this.fx=c.createGain();this.fx.connect(this.mg);this.set();setInterval(()=>this.tick(),480)},
  set(){if(!this.c)return;this.mg.gain.value=this.v;this.mu.gain.value=this.m?.5:0;this.fx.gain.value=this.f?.8:0},
@@ -47,7 +56,9 @@ const A={c:null,v:.5,m:1,f:1,k:0,
  tick(){if(!this.c||!this.m||S.paused||this.c.state!=='running')return;const mo=S.fin?4:S.map,r=[196,174.6,220,261.6,261.6][mo],Q=[1,1.125,1.25,1.5,1.667,2];this.k++;if(this.k%8==1){this.n(r/2,3.6,'sine',.25,this.mu);this.n(r*.75,3.6,'sine',.12,this.mu)}if(Math.random()<(S.end||S.fin?.8:.5))this.n(r*2*Q[(Math.random()*6)|0],1.4,'triangle',.12,this.mu)},
  s(k){if(!this.c)return;const T={blip:[[660,.1]],good:[[523,.15],[659,.15,.1],[784,.3,.2]],bad:[[160,.3,.0]],item:[[880,.1],[1175,.25,.08]],win:[[523,.4],[659,.4,.15],[784,.4,.3],[1047,.4,.45],[1319,.8,.6]]}[k];T.forEach(([f,d,w])=>this.n(f,d,k=='bad'?'sawtooth':'sine',k=='bad'?.08:.18,this.fx,w||0))}
 };
-/* ===== ESTADO ===== */
+/* ==========================================
+  05 — ESTADO E INICIALIZAÇÃO
+========================================== */
 function init(){
  MAPS.forEach(m=>{m.r=m.rows.map(r=>[...r]);if(m.ex.r!=null)[4,6].forEach(y=>m.r[y][19]='.');if(m.ex.l!=null)[4,6].forEach(y=>m.r[y][0]='.');m.o=m.objs.map(o=>({...o}))});if(RAUL_DONE)MAPS[3].o.push({t:'wiz',x:12,y:3});
  Object.keys(S).forEach(k=>delete S[k]);
@@ -58,7 +69,9 @@ const hud=()=>{$('hm').textContent=M().name+(S.map===4?' — Chefe':S.bt&&S.bt.o
 const say=(t,s)=>{const m=$('msg');m.textContent=fmt(t);m.classList.remove('hide');S.msg=s||Math.max(3.2,t.length*.065)};
 const give=n=>{if(!S.items.includes(n)){S.items.push(n);hud();A.s('item')}};
 const burst=(x,y)=>{for(let i=0;i<16;i++)S.pa.push({x,y,vx:(Math.random()-.5)*50,vy:-Math.random()*40,l:1,c:['#ffe28a','#9ff6ff','#ffb3e6'][i%3]})};
-/* ===== COLISÃO E INTERAÇÃO ===== */
+/* ==========================================
+  06 — COLISÕES E INTERAÇÕES
+========================================== */
 const sol=o=>!o.gone&&o.t!=='frag'&&o.t!=='env'&&o.t!=='rab'&&!o.op;
 function blocked(px,py){const tx=px>>4,ty=py>>4;if(tx<0||ty<0||tx>=W||ty>=Hh)return true;if('Th~'.includes(M().r[ty][tx])&&!((tx===19&&M().ex.r!=null||tx===0&&M().ex.l!=null)&&ty>=4&&ty<=6))return true;return M().o.some(o=>sol(o)&&o.x===tx&&ty>=o.y&&ty<o.y+(o.h||1))}
 const hit=(x,y)=>blocked(x-4,y-4)||blocked(x+4,y-4)||blocked(x-4,y)||blocked(x+4,y);
@@ -81,12 +94,16 @@ function use(o){S.p.act=.35;A.s('blip');
  else if(o.t==='rab'){o.gone=1;S.mount=1;A.s('good');say("Um tigre manso! Ele corre muito mais rápido. Aperte E longe de objetos para descer.")}
  else if(o.t==='ped'){if(S.frag.every(Boolean))openPz();else say("O pedestal tem três encaixes. Ainda faltam fragmentos.")}
  else if(o.t==='env')toDungeon()}
-/* ===== QUEBRA-CABEÇA FINAL ===== */
+/* ==========================================
+  07 — QUEBRA-CABEÇA FINAL
+========================================== */
 function openPz(){S.mode='pz';S.pz=[];$('pz').classList.remove('hide');const b=$('pieces');b.innerHTML='';[2,0,1].forEach(i=>{const e=document.createElement('button');e.textContent=CFG.fragments[i];e.onclick=()=>{if(i===S.pz.length){S.pz.push(i);A.s('blip');ph();if(S.pz.length===3){$('pz').classList.add('hide');startBattle('g',"Os espinhos do jardim despertaram! Derrote todos.")}}else{S.pz=[];ph();A.s('bad');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake')}};b.appendChild(e)});ph()}
 const ph=()=>{$('phrase').textContent=S.pz.map(i=>CFG.fragments[i]).join(' ')||'...'};
 function startEnd(){const w=M().o.find(o=>o.t==='wiz');if(w){w.gone=1;burst(w.x*16+8,w.y*16);burst(w.x*16+8,w.y*16+10)}S.mode='end';S.end={t:0};A.s('win');$('msg').classList.add('hide')}
 function showLetter(){S.mode='letter';const p=$('paper');p.innerHTML=CFG.letter.map((t,i)=>`<p style="animation-delay:${1+i*1.6}s">${t}</p>`).join('')+`<p style="animation-delay:${1+CFG.letter.length*1.6}s">${CFG.signature}<br>${CFG.chars[oth()].name}</p><button id="lc">Continuar</button>`;$('letter').classList.remove('hide');$('lc').onclick=()=>{$('letter').classList.add('hide');S.mode='fin';S.fin=1;$('final').classList.remove('hide');A.s('win')}}
-/* ===== UPDATE ===== */
+/* ==========================================
+  08 — ATUALIZAÇÃO DO JOGO
+========================================== */
 function update(dt){S.t+=dt;S.shake=Math.max(0,(S.shake||0)-dt);objUpdate();const p=S.p,m=M();if(S.mode==='cut'||S.mode==='pick'){S.ct+=dt;return}
  S.pa.forEach(q=>{q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=18*dt;q.l-=dt*.6});S.pa=S.pa.filter(q=>q.l>0);if((S.map===1||S.map===3)&&Math.random()<.06)S.pa.push({x:Math.random()*320,y:-4,vx:8,vy:6,l:3.6,c:S.map===3?'#ffb3e6':'#8fc455'});if(Math.random()<.06)S.pa.push({x:Math.random()*320,y:176,vx:(Math.random()-.5)*8,vy:-26,l:2.4,c:S.map===3?'#ffb3e6':S.map===1?'#9fffd0':'#ffe9a8'});
  fire.forEach(f=>{f.p+=dt;f.x+=Math.sin(f.p*.7)*6*dt;f.y+=Math.cos(f.p*.9)*5*dt});bf.forEach(b=>{b.p+=dt;b.x=(b.x+Math.cos(b.p*.7+b.ty)*16*dt+320)%320;b.y+=Math.sin(b.p*1.1)*12*dt});
@@ -104,7 +121,9 @@ function update(dt){S.t+=dt;S.shake=Math.max(0,(S.shake||0)-dt);objUpdate();cons
  if(p.x>=306&&m.ex.r!=null&&!(S.bt&&S.bt.on))S.fade={t:0,to:m.ex.r,x:26,y:92};
  if(p.x<=14&&m.ex.l!=null&&!(S.bt&&S.bt.on))S.fade={t:0,to:m.ex.l,x:294,y:92};
  S.near=near()}
-/* ===== DESENHO ===== */
+/* ==========================================
+  09 — DESENHO E RENDERIZAÇÃO DO MUNDO
+========================================== */
 const G=[];
 function ground(m,x,y,c){const X=x*16,Y=y*16;
  if(c==='~'||c==='b'){R(X,Y,16,16,'#1b3672');R(X,Y+8,16,8,'#17306a');for(let i=0;i<4;i++){const o=Math.sin(S.t*1.5+x+i*1.7)*3;R(X+4+o,Y+i*4,7,1,'#3a68b8');R(X+5+o,Y+i*4+1,4,1,'#244a94')}
@@ -176,7 +195,9 @@ function draw(){if(S.mode==='pick'){drawPick();return}if(S.mode==='cut'){drawCut
  if(S.mode==='play'&&S.near&&!S.fade){const n=S.near,x=n.x*16+8,y=n.y*16-5+Math.sin(S.t*5);R(x-5,y-6,10,10,'#2a1f45');R(x-5,y-6,10,1,'#f2c46d');R(x-5,y+3,10,1,'#f2c46d');ctx.fillStyle='#f6e7c8';ctx.font="9px 'Pixelify Sans',monospace";ctx.textAlign='center';ctx.fillText(n.t==='rab'?'M':'E',x,y+2)}
  ctx.restore();
  if(S.fade){const f=S.fade;R(0,0,320,176,`rgba(8,6,20,${f.t<.3?f.t/.3:1-(f.t-.3)/.3})`)}}
-/* ===== HISTÓRIA EM CAPÍTULOS ===== */
+/* ==========================================
+  10 — PERSONAGENS E AUXILIARES VISUAIS
+========================================== */
 const PC={her:CFG.chars.luisa,raul:CFG.chars.raul};const oth=()=>WHO==='raul'?'luisa':'raul';const ROBE={robe:1,shirt:'#3b2a7a',skirt:'#3b2a7a',shoe:'#2b1f3a',brace:'#e8c872'};const me=()=>S.robe?{...CFG.chars[WHO],...ROBE}:CFG.chars[WHO];
 const fmt=t=>t.replace(/\{o\}/g,CFG.chars[oth()].name).replace(/\{r\}/g,WHO==='raul'?'Você':'Raul').replace(/\{El\}/g,WHO==='raul'?'Ela':'Ele').replace(/\{el\}/g,WHO==='raul'?'ela':'ele').replace(/\{lo\}/g,WHO==='raul'?'la':'lo').replace(/\{b\}/g,RAUL_DONE?"\nUm bruxo de capa preta com listras vermelhas o levou. Só você pode quebrar o feitiço.":"").replace(/\{w\}/g,RAUL_DONE?"O feitiço do bruxo se desfez ao ler a carta. ":"");
 function acc(c,d,x,y){const h=c.hair;if(c.curly){R(x,y-1,10,2,h);R(x+1,y-2,3,1,h);R(x+5,y-2,3,1,h)}
@@ -189,7 +210,9 @@ const heart=(x,y,c)=>{R(x+1,y,2,1,c);R(x+4,y,2,1,c);R(x,y+1,7,2,c);R(x+1,y+3,5,1
 const hearts=(x,y,t,n)=>{for(let k=0;k<n;k++){const u=(t*.5+k/n)%1;ctx.globalAlpha=Math.max(0,1-u);heart(x+Math.sin(k*5+t)*14+k*4-n*2,y-u*40,'#ff7aa8')}ctx.globalAlpha=1};
 const sh=(h,k)=>'#'+[1,3,5].map(i=>Math.max(0,Math.min(255,parseInt(h.substr(i,2),16)+k)).toString(16).padStart(2,'0')).join('');
 const bl=(x,y,w,h,c)=>{R(x+1,y,w-2,1,c);R(x,y+1,w,h-2,c);R(x+1,y+h-1,w-2,1,c)};
-/* ===== SPRITES: gerados por código (contorno, sombra, brilho) ===== */
+/* ==========================================
+  11 — GERAÇÃO DE SPRITES
+========================================== */
 function buildGrid(c,d,f,sit){
  const W=18,Hn=34,g=Array.from({length:Hn},()=>Array(W).fill(null));
  const E=(cx,cy,rx,ry)=>(x,y)=>((x-cx)/rx)**2+((y-cy)/ry)**2<=1;
@@ -255,6 +278,9 @@ function rabbit(X,Y,h){const o='#e8892b',d='#c76a1a',k='#1a1020',w='#f6e3b8',e='
  R(X+2,Y+4-h,14,7,o);R(X+3,Y+9-h,12,2,w);for(let i=0;i<4;i++)R(X+4+i*3,Y+4-h,1,5,k);R(X+2,Y+4-h,14,1,'#f5a24a');
  R(X+15,Y+1-h,7,7,o);R(X+15,Y-1-h,2,2,o);R(X+20,Y-1-h,2,2,o);R(X+16,Y-h,1,1,'#f4a0b0');R(X+21,Y-h,1,1,'#f4a0b0');
  R(X+17,Y+1-h,1,2,k);R(X+19,Y+1-h,1,2,k);R(X+17,Y+3-h,1,1,e);R(X+20,Y+3-h,1,1,e);R(X+18,Y+5-h,4,3,w);R(X+21,Y+5-h,1,1,k);R(X+19,Y+7-h,2,1,'#b5532a')}
+/* ==========================================
+  12 — CENAS E ANIMAÇÕES DE HISTÓRIA
+========================================== */
 function sBench(t,i,solo){lg('#ff9a5c','#6a3a6a');R(0,112,320,64,'#8f8a96');
  [[8,56,52,56],[70,34,44,78],[232,44,64,68],[186,70,40,42]].forEach(([x,y,w,h],k)=>{R(x,y,w,h,'#3a2a50');for(let a=0;a<w-8;a+=10)for(let b=6;b<h-8;b+=14)R(x+4+a,y+b,5,7,(a+b+k)%3?'#f6d77a':'#5a4a70')});
  R(148,48,5,64,'#4a3020');[[128,42,46],[134,36,34],[141,30,20],[122,48,58]].forEach(([x,y,w])=>R(x,y,w,5,'#2f6b3a'));
@@ -279,6 +305,9 @@ function sEnd(t){lg('#2a1f5a','#d890b8');R(0,118,320,58,'#4a8a5a');
  for(let k=0;k<24;k++){const x=(k*47)%310+4,y=124+(k*29)%46;R(x,y,2,2,['#ffb3e6','#fff1a8','#9ff6ff'][k%3]);R(x,y+2,1,2,'#2e6b3a')}
  gl(40,60,50,'#ffc060',.3);gl(290,60,50,'#ffc060',.3);const hx=Math.min(176,-16+t*28),walk=hx<176;
  person(hx,108+(walk&&Math.sin(t*9)>0?-1:0),me(),0,walk?(Math.sin(t*9)>0?1:-1):0);person(208,108,CFG.chars[oth()],0);R(218,118,2,10,'#2e6b3a');R(214,114,10,6,'#ff7aa8');R(217,112,4,3,'#ffe28a');if(!walk)hearts(192,100,t-6.5,6)}
+/* ==========================================
+  13 — AJUDA, OBJETIVOS E EXPLORAÇÃO
+========================================== */
 const KEY=k=>'<b class="k">'+k+'</b>';
 const HELP={game:'<h2>Como jogar</h2><p>'+KEY('W A S D')+' ou '+KEY('SETAS')+' andar</p><p>'+KEY('E')+' interagir (placas, runas, caixas)</p><p>'+KEY('M')+' montar e descer do tigre</p><p>'+KEY('ESC')+' pausa</p><p class="s">No celular: direcional à esquerda, botões E e M à direita.</p><p>Siga a <span class="gd">trilha dourada</span> e o <span class="gd">Objetivo</span> no topo da tela.</p><p class="s">Toque ou aperte E para começar</p>',
  battle:'<h2>Batalha!</h2><p>'+KEY('E')+' lança magia (a mira é automática)</p><p>Desvie dos ataques: você tem 3 corações</p><p>Derrote todas as ondas para abrir a porta</p><p class="s">Toque ou aperte E para lutar</p>',
@@ -299,6 +328,9 @@ function objUpdate(){const ob=objective();S.obj=ob;const el=$('ob');if(ob){const
 function trailDraw(){const o=S.obj;if(!o||o.x==null)return;const p=S.p,dx=o.x-p.x,dy=o.y-(p.y-6),d=Math.hypot(dx,dy);if(d<18)return;const n=Math.min(Math.floor(d/12),16),off=(S.t*18)%12;ctx.globalCompositeOperation='lighter';
  for(let i=0;i<n;i++){const u=(i*12+off)/d;if(u>1)break;const x=p.x+dx*u,y=p.y-6+dy*u;ctx.globalAlpha=Math.min(1,.25+.75*Math.sin(Math.min(1,u)*3.14));R(x-1,y-1,3,3,'#ffe28a');R(x,y-2,1,5,'#fff6c0');R(x-2,y,5,1,'#fff6c0')}
  ctx.globalAlpha=1;gl(o.x,o.y,20,'#ffe28a',.5+.2*Math.sin(S.t*4));const b=Math.sin(S.t*5)*2;R(o.x-4,o.y-24+b,8,2,'#ffe28a');R(o.x-3,o.y-22+b,6,2,'#ffe28a');R(o.x-2,o.y-20+b,4,2,'#ffe28a');R(o.x-1,o.y-18+b,2,2,'#ffe28a');ctx.globalCompositeOperation='source-over'}
+/* ==========================================
+  14 — SISTEMA DE BATALHA
+========================================== */
 const BT={f:{col:'#3a2a5a',eye:'#ff6ec7',w:[[4,0],[2,2]]},l:{col:'#3f8fe0',eye:'#e6fbff',w:[[3,1],[2,3]]},g:{col:'#d8508f',eye:'#ffe28a',w:[[3,1],[2,3],[3,3]]}};
 function startBattle(k,msg){S.mode='play';S.bt={on:1,k,wave:0,foes:[],ep:[],sh:[],php:3,inv:0,cd:0,t:0,wt:.8,lose:0,lt:0};hud();if(!S.hb){S.hb=1;showHelp(HELP.battle,()=>msg&&say(msg,6))}else if(msg)say(msg,6)}
 function spawnWave(){const b=S.bt,w=BT[b.k].w[b.wave],p=S.p;let i=0;[0,1].forEach(ty=>{for(let n=0;n<w[ty];n++){let x,y,g=0;do{x=30+Math.random()*260;y=34+Math.random()*120;g++}while(Math.hypot(x-p.x,y-p.y)<90&&g<30);b.foes.push({x,y,hp:2,ty,sp:.6+i*.12,cd:1.5+Math.random(),ph:Math.random()*6,fl:0});i++;ring(x,y,BT[b.k].eye,18)}});b.wave++}
@@ -338,6 +370,9 @@ function btDraw(){const b=S.bt,T=BT[b.k];
  S.rg.forEach(q=>{ctx.strokeStyle=q.c;ctx.globalAlpha=Math.max(0,q.l);ctx.lineWidth=2;ctx.beginPath();ctx.arc(q.x,q.y,Math.min(q.r,q.m),0,6.3);ctx.stroke();ctx.globalAlpha=1});
  ctx.fillStyle='#ffffff';ctx.font="7px 'Pixelify Sans',monospace";ctx.textAlign='center';ctx.fillText('Onda '+Math.min(b.wave,T.w.length)+'/'+T.w.length,160,19);for(let i=0;i<3;i++)heart(6+i*9,18,i<b.php?'#ff5a7a':'#40303a');
  if(b.inv>1)R(0,0,320,176,'rgba(255,40,60,.2)');if(b.lose){R(0,0,320,176,'rgba(10,6,24,.6)');ctx.fillStyle='#ffffff';ctx.fillText('Você caiu... tente de novo',160,90)}}
+/* ==========================================
+  15 — CHEFE FINAL
+========================================== */
 function toDungeon(){S.bt=null;S.mode='bi';S.map=4;S.p.x=24;S.p.y=92;S.p.d=3;S.seen[4]=1;S.boss=initBoss();hud();showHelp(HELP.boss,startFight)}
 function initBoss(){return{on:0,hp:8,max:8,php:3,t:0,st:'idle',tm:1.4,pat:0,proj:[],zn:[],sh:[],inv:0,cd:0,flash:0,cast:0,dead:0,dt:0,wx:236,wy:88}}
 function startFight(){S.mode='play';S.boss.on=1;$('msg').classList.add('hide');A.s('good')}
@@ -378,6 +413,9 @@ function bossDraw(){const b=S.boss;
  if(b.lose){R(0,0,320,176,'rgba(10,6,24,.6)');ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.fillText('Você caiu... tente de novo',160,90)}
  if(b.dead&&b.dt>1.2&&b.dt<1.6)R(0,0,320,176,`rgba(255,255,255,${(1.6-b.dt)/.4*.8})`)}
 
+/* ==========================================
+  16 — SELEÇÃO DE PERSONAGEM E CUTSCENES
+========================================== */
 function pickMenu(){S.mode='pick';$('pick').classList.remove('hide');$('pq').textContent=RAUL_DONE?'Raul precisa da sua ajuda':'Quem vai jogar?';$('pr').classList.toggle('hide',!!RAUL_DONE);$('pl').disabled=!RAUL_DONE;$('pr').innerHTML='Raul<small>Começar a história</small>';$('pl').innerHTML='Luísa<small>'+(RAUL_DONE?'Salvar o Raul':'Bloqueada')+'</small>'}
 function wizGrid(cast){
  const W=24,Hn=36,g=Array.from({length:Hn},()=>Array(W).fill(null));
@@ -440,7 +478,9 @@ function drawPick(){const t=S.ct,hv=S.hv||(RAUL_DONE?'luisa':'raul');ctx.save();
  ctx.restore()}
 
 function drawCut(){ctx.save();ctx.clearRect(0,0,320,176);CUTS[S.ci].s(S.ct,S.li);const v=ctx.createRadialGradient(160,88,60,160,88,200);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(5,3,15,.5)');ctx.fillStyle=v;ctx.fillRect(0,0,320,176);ctx.restore()}
-/* ===== ENTRADA E UI ===== */
+/* ==========================================
+  17 — CONTROLES, EVENTOS E INICIALIZAÇÃO
+========================================== */
 const keymap={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
 function act(){if(S.paused)return;if(S.mode==='cut')return nextCut();if(S.mode==='help'){closeHelp();return}if(S.mode==='bi'){startFight();return}if(S.mode==='play'&&S.boss&&S.boss.on){castShot();return}if(S.mode==='play'&&S.bt&&S.bt.on){btShot();return}if(S.mode==='play'&&!S.fade){const o=near();if(o)use(o);else if(S.mount){S.mount=0;M().o.push({t:'rab',x:S.p.x>>4,y:(S.p.y-2)>>4});A.s('blip')}else $('msg').classList.add('hide')}}
 function pause(v){if(S.mode==='title'||S.mode==='fin')return;S.paused=v;$('pause').classList.toggle('hide',!v);Object.keys(K).forEach(k=>K[k]=0)}
